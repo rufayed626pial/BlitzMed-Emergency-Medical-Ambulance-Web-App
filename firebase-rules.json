@@ -1,0 +1,42 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid || auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com'",
+        ".write": "$uid === auth.uid || auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com'",
+        ".validate": "newData.hasChildren(['name', 'email', 'createdAt']) && newData.child('email').val() === auth.token.email"
+      }
+    },
+    "bookings": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$bookingId": {
+        ".read": "auth != null && (data.child('userId').val() === auth.uid || auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com')",
+        ".write": "auth != null && (data.child('userId').val() === auth.uid || auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com')",
+        ".validate": "newData.hasChildren(['patientName', 'contactNumber', 'pickupLocation', 'destination', 'serviceType', 'urgencyLevel', 'userId', 'userEmail', 'status', 'createdAt']) && newData.child('userId').val() === auth.uid",
+        "pickupLat": {
+          ".validate": "newData.isNumber() || newData.val() === null"
+        },
+        "pickupLng": {
+          ".validate": "newData.isNumber() || newData.val() === null"
+        },
+        "destLat": {
+          ".validate": "newData.isNumber() || newData.val() === null"
+        },
+        "destLng": {
+          ".validate": "newData.isNumber() || newData.val() === null"
+        },
+        "status": {
+          ".write": "auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com'"
+        },
+        "updatedAt": {
+          ".write": "auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com'"
+        }
+      }
+    },
+    "analytics": {
+      ".read": "auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com'",
+      ".write": "auth.token.email === 'admin@blitzmed.com' || auth.token.email === 'admin@example.com'"
+    }
+  }
+}

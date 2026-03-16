@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlitzMed - Emergency Medical Transport</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <meta name="description"
+        content="Professional ambulance services available 24/7. Quick response, advanced care, and safe transport when you need it most.">
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <div class="logo-inner">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                </div>
+                <h1>BlitzMed</h1>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active" data-nav="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#services" class="nav-link" data-nav="services">
+                    <i class="fas fa-ambulance"></i>
+                    <span>Services</span>
+                </a>
+                <a href="#about" class="nav-link" data-nav="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+                <a href="#contact" class="nav-link" data-nav="contact">
+                    <i class="fas fa-phone"></i>
+                    <span>Contact</span>
+                </a>
+                <button id="authBtn" class="auth-btn">
+                    <i class="fas fa-user"></i>
+                    <span>Login</span>
+                </button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home Section -->
+        <section id="home" class="hero">
+            <div class="hero-background">
+                <div class="hero-gradient"></div>
+                <div class="floating-elements">
+                    <div class="floating-element"></div>
+                    <div class="floating-element"></div>
+                    <div class="floating-element"></div>
+                </div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>24/7 Emergency Response</span>
+                    </div>
+                    <h1>Emergency Medical<br><span class="gradient-text">Transport</span></h1>
+                    <p>Professional ambulance services with advanced life support. When every second counts, trust
+                        BlitzMed for rapid response and expert care.</p>
+                    <div class="hero-actions">
+                        <button id="bookNowBtn" class="cta-btn primary">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Book Ambulance</span>
+                        </button>
+                        <button class="cta-btn secondary" onclick="utils.scrollToSection('services')">
+                            <i class="fas fa-play"></i>
+                            <span>Learn More</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">2000+</span>
+                            <span class="stat-label">Lives Saved</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5min</span>
+                            <span class="stat-label">Avg Response</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Available</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="ambulance-container">
+                        <div class="ambulance-icon">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                        <div class="pulse-rings">
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <i class="fas fa-medical-kit"></i>
+                        <span>Our Services</span>
+                    </div>
+                    <h2>Comprehensive Medical Transport</h2>
+                    <p>State-of-the-art ambulance services equipped with advanced medical technology and staffed by
+                        certified professionals.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card" data-service="als">
+                        <div class="service-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Advanced Life Support</h3>
+                            <p>ICU on wheels with paramedic staff, cardiac monitors, defibrillators, and advanced airway
+                                management for critical emergencies.</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check"></i> Cardiac monitoring</li>
+                                <li><i class="fas fa-check"></i> Advanced medications</li>
+                                <li><i class="fas fa-check"></i> Intubation capability</li>
+                            </ul>
+                        </div>
+                        <div class="service-overlay"></div>
+                    </div>
+                    <div class="service-card" data-service="bls">
+                        <div class="service-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Basic Life Support</h3>
+                            <p>Non-critical patient transport with basic medical support, oxygen therapy, and trained
+                                EMT personnel.</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check"></i> Oxygen therapy</li>
+                                <li><i class="fas fa-check"></i> Basic monitoring</li>
+                                <li><i class="fas fa-check"></i> EMT certified staff</li>
+                            </ul>
+                        </div>
+                        <div class="service-overlay"></div>
+                    </div>
+                    <div class="service-card" data-service="transport">
+                        <div class="service-icon">
+                            <i class="fas fa-wheelchair"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Patient Transport</h3>
+                            <p>Safe and comfortable transport for routine medical appointments, discharge, and
+                                non-emergency transfers.</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check"></i> Wheelchair accessible</li>
+                                <li><i class="fas fa-check"></i> Stretcher transport</li>
+                                <li><i class="fas fa-check"></i> Comfort care</li>
+                            </ul>
+                        </div>
+                        <div class="service-overlay"></div>
+                    </div>
+                    <div class="service-card" data-service="air">
+                        <div class="service-icon">
+                            <i class="fas fa-helicopter"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Air Ambulance</h3>
+                            <p>Critical care transport via helicopter or aircraft for long-distance emergencies and
+                                time-sensitive situations.</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check"></i> Rapid deployment</li>
+                                <li><i class="fas fa-check"></i> Long distance</li>
+                                <li><i class="fas fa-check"></i> Critical care team</li>
+                            </ul>
+                        </div>
+                        <div class="service-overlay"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <div class="section-badge">
+                            <i class="fas fa-award"></i>
+                            <span>Why Choose Us</span>
+                        </div>
+                        <h2>Excellence in Emergency Care</h2>
+                        <p>With over a decade of experience in emergency medical services, BlitzMed has become the
+                            trusted choice for hospitals, healthcare facilities, and individuals across the region.</p>
+                        <div class="about-features">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Rapid Response</h4>
+                                    <p>Average response time of 5 minutes with GPS tracking and optimized routing.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Certified Professionals</h4>
+                                    <p>All staff are certified EMTs and Paramedics with ongoing training and education.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Insurance Accepted</h4>
+                                    <p>We work with all major insurance providers and offer flexible payment options.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-visual">
+                        <div class="about-image">
+                            <div class="image-placeholder">
+                                <i class="fas fa-user-nurse"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Contact Us</span>
+                    </div>
+                    <h2>Emergency Hotline</h2>
+                    <p>Available 24/7 for all your emergency medical transport needs.</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Emergency Line</h4>
+                                <p>911 or (+880) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Email Support</h4>
+                                <p>support@blitzmed.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Service Area</h4>
+                                <p>Metro Area & Surrounding Regions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="emergency-notice">
+                        <div class="notice-content">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Life-Threatening Emergency?</h3>
+                            <p>Call 911 immediately or use our instant booking system for non-critical transport.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="authTitle">Welcome Back</h2>
+                <button class="modal-close" onclick="utils.closeModal(elements.authModal)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-form active">
+                    <form id="loginFormEl">
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="loginEmail" placeholder="Email Address" required>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" placeholder="Password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Sign In</span>
+                        </button>
+                    </form>
+                    <div class="auth-switch">
+                        <p>Don't have an account? <button id="showRegister" class="link-btn">Create one</button></p>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="auth-form">
+                    <form id="registerFormEl">
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="registerName" placeholder="Full Name" required>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="registerEmail" placeholder="Email Address" required>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="registerPassword" placeholder="Password" required>
+                                <button type="button" class="password-toggle"
+                                    onclick="togglePassword('registerPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="field-error"></div>
+                            <div class="password-strength">
+                                <div class="strength-meter">
+                                    <div class="strength-fill"></div>
+                                </div>
+                                <div class="strength-text">Password strength</div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Account</span>
+                        </button>
+                    </form>
+                    <div class="auth-switch">
+                        <p>Already have an account? <button id="showLogin" class="link-btn">Sign in</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content booking-modal">
+            <div class="modal-header">
+                <h2>Book Ambulance Service</h2>
+                <button class="modal-close" onclick="utils.closeModal(elements.bookingModal)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="booking-progress">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-icon"><i class="fas fa-user"></i></div>
+                        <span>Patient Info</span>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <span>Location</span>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-icon"><i class="fas fa-ambulance"></i></div>
+                        <span>Service</span>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-icon"><i class="fas fa-check"></i></div>
+                        <span>Confirm</span>
+                    </div>
+                </div>
+
+                <form id="bookingForm">
+                    <!-- Step 1: Patient Information -->
+                    <div class="booking-step active" data-step="1">
+                        <h3>Patient Information</h3>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Patient Name *</label>
+                                <div class="input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="patientName" placeholder="Full Name" required>
+                                </div>
+                                <div class="field-error"></div>
+                            </div>
+                            <div class="input-group">
+                                <label>Contact Number *</label>
+                                <div class="input-field">
+                                    <i class="fas fa-phone"></i>
+                                    <input type="tel" id="contactNumber" placeholder="Phone Number" required>
+                                </div>
+                                <div class="field-error"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Emergency Contact Name</label>
+                                <div class="input-field">
+                                    <i class="fas fa-user-friends"></i>
+                                    <input type="text" id="emergencyContactName" placeholder="Contact person name">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Emergency Contact Phone</label>
+                                <div class="input-field">
+                                    <i class="fas fa-phone-alt"></i>
+                                    <input type="tel" id="emergencyContactPhone" placeholder="Emergency contact number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="emergency-actions">
+                            <button type="button" class="btn-outline" id="autoFillContactBtn">
+                                <i class="fas fa-user-plus"></i>
+                                Auto-fill from Profile
+                            </button>
+                            <button type="button" class="btn-outline" id="shareContactBtn">
+                                <i class="fas fa-share"></i>
+                                Share Contact Info
+                            </button>
+                        </div>
+                        <div class="input-group">
+                            <label>Medical Notes (Optional)</label>
+                            <div class="input-field">
+                                <i class="fas fa-notes-medical"></i>
+                                <textarea id="medicalNotes"
+                                    placeholder="Any specific medical information or requirements"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Location Details -->
+                    <div class="booking-step" data-step="2">
+                        <h3>Location Details</h3>
+                        <div class="input-group">
+                            <label>Pickup Location *</label>
+                            <div class="input-field">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="pickupLocation" placeholder="Street address, city, state"
+                                    required>
+                                <button type="button" class="map-select-btn" id="pickupMapBtn">
+                                    <i class="fas fa-map"></i>
+                                </button>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label>Destination *</label>
+                            <div class="input-field">
+                                <i class="fas fa-hospital"></i>
+                                <input type="text" id="destination" placeholder="Hospital or destination address"
+                                    required>
+                                <button type="button" class="map-select-btn" id="destinationMapBtn">
+                                    <i class="fas fa-map"></i>
+                                </button>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Service Selection -->
+                    <div class="booking-step" data-step="3">
+                        <h3>Service Selection</h3>
+                        <div class="service-selection">
+                            <div class="service-option" data-service="als">
+                                <input type="radio" id="serviceALS" name="serviceType" value="Advanced Life Support">
+                                <label for="serviceALS">
+                                    <div class="service-info">
+                                        <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
+                                        <div class="service-details">
+                                            <h4>Advanced Life Support</h4>
+                                            <p>ICU on wheels with paramedic staff and advanced equipment</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-option" data-service="bls">
+                                <input type="radio" id="serviceBLS" name="serviceType" value="Basic Life Support">
+                                <label for="serviceBLS">
+                                    <div class="service-info">
+                                        <div class="service-icon"><i class="fas fa-user-md"></i></div>
+                                        <div class="service-details">
+                                            <h4>Basic Life Support</h4>
+                                            <p>Non-critical patient transport with basic medical support</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-option" data-service="transport">
+                                <input type="radio" id="serviceTransport" name="serviceType" value="Patient Transport">
+                                <label for="serviceTransport">
+                                    <div class="service-info">
+                                        <div class="service-icon"><i class="fas fa-wheelchair"></i></div>
+                                        <div class="service-details">
+                                            <h4>Patient Transport</h4>
+                                            <p>Safe transport for routine appointments and transfers</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-option" data-service="air">
+                                <input type="radio" id="serviceAir" name="serviceType" value="Air Ambulance">
+                                <label for="serviceAir">
+                                    <div class="service-info">
+                                        <div class="service-icon"><i class="fas fa-helicopter"></i></div>
+                                        <div class="service-details">
+                                            <h4>Air Ambulance</h4>
+                                            <p>Emergency helicopter transport for critical cases and remote areas</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Urgency Level *</label>
+                            <div class="urgency-selection">
+                                <div class="urgency-option" data-urgency="emergency">
+                                    <input type="radio" id="urgencyEmergency" name="urgencyLevel" value="Emergency">
+                                    <label for="urgencyEmergency">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>Emergency</span>
+                                    </label>
+                                </div>
+                                <div class="urgency-option" data-urgency="urgent">
+                                    <input type="radio" id="urgencyUrgent" name="urgencyLevel" value="Urgent">
+                                    <label for="urgencyUrgent">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Urgent</span>
+                                    </label>
+                                </div>
+                                <div class="urgency-option" data-urgency="scheduled">
+                                    <input type="radio" id="urgencyScheduled" name="urgencyLevel" value="Scheduled">
+                                    <label for="urgencyScheduled">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Scheduled</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Confirmation -->
+                    <div class="booking-step" data-step="4">
+                        <h3>Booking Confirmation</h3>
+                        <div class="booking-summary">
+                            <div class="summary-item">
+                                <strong>Patient:</strong> <span id="summaryPatient"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Contact:</strong> <span id="summaryContact"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Emergency Contact:</strong> <span id="summaryEmergencyContact"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>From:</strong> <span id="summaryPickup"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>To:</strong> <span id="summaryDestination"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Service:</strong> <span id="summaryService"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Urgency:</strong> <span id="summaryUrgency"></span>
+                            </div>
+                        </div>
+                        <div class="confirmation-notice">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Your booking request will be processed immediately. You will receive a confirmation
+                                shortly with estimated arrival time.</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="prevStepBtn" class="btn secondary" style="display: none;">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Previous</span>
+                </button>
+                <button id="nextStepBtn" class="btn primary">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>Next</span>
+                </button>
+                <button id="submitBookingBtn" class="btn primary" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    <span>Confirm Booking</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Selection Modal -->
+    <div id="mapModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content map-modal">
+            <div class="modal-header">
+                <h2 id="mapModalTitle">Select Location</h2>
+                <button class="modal-close" onclick="utils.closeModal(elements.mapModal)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="map-container">
+                    <div id="map" style="height: 400px;"></div>
+                </div>
+                <div class="map-controls">
+                    <div class="input-group">
+                        <label>Search Location</label>
+                        <div class="input-field">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="mapSearch" placeholder="Search for a location">
+                            <button type="button" class="search-btn" id="mapSearchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmLocationBtn" class="btn primary">
+                    <i class="fas fa-check"></i>
+                    <span>Confirm Location</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboardModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content dashboard-modal">
+            <div class="modal-header">
+                <h2>Dashboard</h2>
+                <button class="modal-close" onclick="utils.closeModal(elements.dashboardModal)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="dashboard-tabs">
+                    <button id="myBookingsTab" class="tab-btn active">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>My Bookings</span>
+                    </button>
+                    <button id="routesTab" class="tab-btn">
+                        <i class="fas fa-route"></i>
+                        <span>Routes</span>
+                    </button>
+                    <button id="adminPanelTab" class="tab-btn" style="display: none;">
+                        <i class="fas fa-cog"></i>
+                        <span>Admin Panel</span>
+                    </button>
+                    <button id="logoutBtn" class="tab-btn logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+
+                <!-- My Bookings Tab -->
+                <div id="myBookings" class="tab-content active">
+                    <div class="tab-header">
+                        <h3>My Bookings</h3>
+                        <button id="refreshDataBtn" class="btn secondary">
+                            <i class="fas fa-sync"></i>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+                    <div id="bookingsList" class="bookings-list">
+                        <div class="no-bookings">
+                            <i class="fas fa-calendar-times"></i>
+                            <h4>No bookings found</h4>
+                            <p>You haven't made any ambulance bookings yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Routes Tab -->
+                <div id="routes" class="tab-content">
+                    <div class="tab-header">
+                        <h3>Route Visualization</h3>
+                        <select id="routeBookingSelect" class="filter-select">
+                            <option value="">Select a booking</option>
+                        </select>
+                    </div>
+                    <div class="route-container">
+                        <div id="routeMap" style="height: 400px; margin-bottom: 20px;"></div>
+                        <div class="route-info">
+                            <div class="route-details">
+                                <h4>Route Information</h4>
+                                <div class="detail-item">
+                                    <strong>Distance:</strong> <span id="routeDistance">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Estimated Time:</strong> <span id="routeTime">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Status:</strong> <span id="routeStatus">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Panel Tab -->
+                <div id="adminPanel" class="tab-content">
+                    <div class="tab-header">
+                        <h3>Admin Panel</h3>
+                        <div class="admin-controls">
+                            <select id="statusFilter" class="filter-select">
+                                <option value="">All Bookings</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="allBookingsList" class="bookings-list">
+                        <div class="no-bookings">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h4>No bookings found</h4>
+                            <p>No bookings match the current filter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- Leaflet Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Main JavaScript -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>
